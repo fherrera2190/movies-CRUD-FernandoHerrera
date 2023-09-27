@@ -3,7 +3,6 @@ const moment = require("moment");
 //Otra forma de llamar a los modelos
 const { validationResult } = require("express-validator");
 
-
 const moviesController = {
   list: (req, res) => {
     db.Movie.findAll().then(movies => {
@@ -123,12 +122,41 @@ const moviesController = {
   },
   destroy: function(req, res) {
     // TODO
-    db.Movie.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-    res.redirect("/movies");
+    db.ActorMovie
+      .destroy({
+        where: {
+          movie_id: req.params.id
+        }
+      })
+      .then(reponse => {
+        db.Actor
+          .update(
+            {
+              favorite_movie_id: null
+            },
+            {
+              where: {
+                favorite_movie_id: req.params.id
+              }
+            }
+          )
+          .then(response => {
+            console.log(response);
+            db.Movie
+              .destroy({
+                where: {
+                  id: req.params.id
+                }
+              })
+              .then(result => {
+                console.log(response);
+                res.redirect("/movies");
+              });
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 
