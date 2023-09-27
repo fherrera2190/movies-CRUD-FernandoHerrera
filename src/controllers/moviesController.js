@@ -103,7 +103,7 @@ const moviesController = {
       )
       .then(response => {
         //console.log(response);
-        res.redirect("/movies");
+        res.redirect("/movies/detail/"+req.params.id);
       })
       .catch(err => {
         console.log(err);

@@ -10,7 +10,7 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING
         },
         rating: {
-            type: dataTypes.INTEGER
+            type:  dataTypes.DECIMAL(3, 1)
         },
         length: {
             type: dataTypes.INTEGER
